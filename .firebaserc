@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "icecreammir4": {
+      "hosting": {
+        "IceCreamMir4": [
+          "icecreammir4"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "icecreammir4"
+  }
+}
