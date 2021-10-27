@@ -1,0 +1,14 @@
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <h5 style="" class="my-0 mr-md-auto font-weight-normal" [routerLink]="[ '/inicio' ]">Ice Cream Mir4 <a
+            style="font-size: 10px;"></a> </h5>
+            
+    <nav class="my-2 my-md-0 mr-md-3" *ngFor="let item of menuList">
+
+
+        <a   class="p-2 text-dark" [routerLink]="[ item.route ]" routerLinkActive="activate">{{item.name}}</a>
+        <!-- <a class="p-2 text-dark" [routerLink]="[ '/users' ]" routerLinkActive="activate">Usuarios</a> -->
+
+
+    </nav>
+    <a class="btn btn-outline-secondary" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+</div>

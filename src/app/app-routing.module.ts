@@ -4,7 +4,11 @@ import { ErrorComponent } from './components/error/error.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
+import { DonationListComponent } from './pages/donations/donation-list/donation-list.component';
 import { HomeComponent } from './pages/home/home.component';
+import { ObjectListsComponent } from './pages/objects/object-lists/object-lists.component';
+import { PetitionListComponent } from './pages/petitions/petition-list/petition-list.component';
+import { UserListComponent } from './pages/users/user-list/user-list.component';
 
 const routes: Routes = [
 
@@ -13,6 +17,12 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
 
   { path: 'home', component: HomeComponent,canActivate: [AuthGuard] },
+  { path: 'users', component: UserListComponent,canActivate: [AuthGuard] },
+  { path: 'donations', component: DonationListComponent,canActivate: [AuthGuard] },
+  { path: 'petitions', component: PetitionListComponent,canActivate: [AuthGuard] },
+  { path: 'objects', component: ObjectListsComponent,canActivate: [AuthGuard] },
+
+
   // { path: 'crear-evento/:id', component: CrearEventoComponent ,canActivate: [AuthGuard]},
   
   //Mis rutas

@@ -21,30 +21,46 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._user.getCurrentUser().then(
-      user => {     
-        this.router.navigate(['/home']);
-      },
-      err => {
-      }
-    );
+    // this._user.getCurrentUser().then(
+    //   user => {     
+    //     this.router.navigate(['/home']);
+    //   },
+    //   err => {
+    //   }
+    // );
   }
 
   register() {
     Swal.showLoading();
 
-    const body = {
-      discord: this.discord,
-      name: this.usuario,
-      password: this.pass,
-    }
-    this._user.registerUser(body).then(res => {
+    this._user.getUserRegister(this.usuario).subscribe(res => {
       console.log(res);
-      Swal.close()
-      Swal.fire("Información guardada",)
-      this.router.navigate(['/login']);
+      if (res.length == 0) {
+        const body = {
+          discord: this.discord,
+          name: this.usuario,
+          password: this.pass,
+        }
+        this._user.registerUser(body).then(res => {
+          console.log(res);
+          Swal.close()
+          Swal.fire("Información guardada",)
+          this.router.navigate(['/login']);
+        })
+
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ya hay un usuario creado con este nombre',
+        })
+        // Swal.close()
+      }
+
 
     })
+
+
   }
 
 }

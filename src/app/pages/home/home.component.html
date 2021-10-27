@@ -1,1 +1,52 @@
-<p>home works!</p>
+<div class="row news">
+
+    <div class="col">
+        <div class="single-service" style="text-align: center;">
+            <h4><span class="lnr lnr-user"></span>Hora inicio</h4>
+            <p style="text-align: center;">
+                <a>0</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="single-service" style="text-align: center;">
+            <h4><span class="lnr lnr-user"></span>Donación</h4>
+            <p style="text-align: center;">
+                <a>0</a>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="col" (click)="goToPetition()" >
+        <div class="single-service" style="text-align: center;">
+            <h4><span class="lnr lnr-user"></span>Hacer una petición</h4>
+            <p style="text-align: center;">
+                <mat-icon>launch</mat-icon>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="col" (click)="goToObject()" *ngIf="user.rol === 'root' || user.rol === 'admin'" >
+        <div class="single-service" style="text-align: center;">
+            <h4><span class="lnr lnr-user"></span>Crear objeto</h4>
+            <p style="text-align: center;">
+                <mat-icon>launch</mat-icon>
+            </p>
+        </div>
+    </div>
+
+
+    <!-- <div class="col">
+        <div class="single-service" style="text-align: center;">
+            <h4><span class="lnr lnr-user"></span>Donación</h4>
+            <p style="text-align: center;">
+                <a>0</a>
+            </p>
+        </div>
+    </div> -->
+
+
+</div>

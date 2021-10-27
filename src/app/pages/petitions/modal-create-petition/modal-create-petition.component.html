@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Petición de objetos</h2>
+
+<mat-card style="background-color: #f44336;color: white;" *ngFor="let item of alerts" >{{item.name}}</mat-card>
+
+<br>
+<br>
+
+
+<mat-dialog-content>
+    <mat-form-field class="example-full-width" appearance="fill">
+
+        <mat-select placeholder="Sleecionar objeto" [(ngModel)]="object">
+            <mat-option [value]="item.name" *ngFor="let item of objects">{{item.name}}</mat-option>
+        </mat-select>
+
+    </mat-form-field>
+
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-select placeholder="Cantidad" [(ngModel)]="count">
+            <mat-option [value]="item.id" *ngFor="let item of numberGlobal">{{item.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput placeholder="Description" [(ngModel)]="description">
+
+        </textarea>
+
+    </mat-form-field>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <div class="example-button-row">
+        <button mat-raised-button (click)="close()">Cerrar</button>
+        <button mat-raised-button color="primary" (click)="save()">Enviar</button>
+    </div>
+
+</mat-dialog-actions>

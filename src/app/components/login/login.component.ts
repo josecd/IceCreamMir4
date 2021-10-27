@@ -4,6 +4,7 @@ import { UsersService } from 'src/app/services/users.service';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { ApiBasic } from 'src/app/services/api-basic';
 import { Router } from '@angular/router';
+import { LocalstorageService } from 'src/app/services/localstorage.service';
 
 @Component({
   selector: 'app-login',
@@ -53,13 +54,14 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private _user: UsersService,
     public formBuilder: FormBuilder,
-    private _app: ApiBasic
+    private _app: ApiBasic,
+    private _localstorage:LocalstorageService
   ) { }
 
   ngOnInit(): void {
     this.LoginForm();
     this._user.getCurrentUser().then(
-      user => {     
+      user => {
         this.router.navigate(['/home']);
       },
       err => {
@@ -72,17 +74,18 @@ export class LoginComponent implements OnInit {
     this._user.getUser(value).subscribe(res => {
       if (res.length != 0) {
         this._app.user = res[0]
-        const localStouser={
-          name:  this._app.user.name,
-          id:  this._app.user.id,
+        const localStouser = {
+          name: this._app.user.name,
+          id: this._app.user.id,
           rol: this._app.user.rol,
           discord: this._app.user
         }
         localStorage.setItem('usuario', JSON.stringify(localStouser));
         this.router.navigate(['/home']);
+        this._localstorage.sendMessage('Message from Home Component to App Component!');
+
       } else {
         console.log(res);
-        console.log('No tengo usuario');
 
       }
     })
@@ -95,7 +98,7 @@ export class LoginComponent implements OnInit {
           '',
           Validators.compose([
             Validators.required,
-            Validators.minLength(6),
+            Validators.minLength(2),
             Validators.maxLength(30),
           ])
         ),
@@ -103,7 +106,7 @@ export class LoginComponent implements OnInit {
           '',
           Validators.compose([
             Validators.required,
-            Validators.minLength(5),
+            Validators.minLength(2),
             Validators.maxLength(50),
             // Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$')
           ])

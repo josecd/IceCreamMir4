@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>Petición de objeto {{data.userName}}</h2>
+<!-- 
+<mat-card style="background-color: #f44336;color: white;" *ngFor="let item of alerts" >{{item.name}}</mat-card>
+
+<br>
+<br> -->
+
+
+<mat-dialog-content>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Objeto</mat-label>
+        <input matInput disabled [value]="data.nameObject">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Cantidad</mat-label>
+        <input matInput disabled [value]="data.count">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Descripción</mat-label>
+        <input matInput disabled [value]="data.description">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill" *ngIf="data.approve == 'Rechazado'" >
+        <mat-label>Descripción rechazo</mat-label>
+        <input matInput disabled [value]="data.description">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="data.nameAttended" class="example-full-width" appearance="fill">
+        <mat-label>Cerro la petición</mat-label>
+        <input matInput disabled [value]="data.nameAttended">
+    </mat-form-field>
+
+    
+
+    <section class="example-section" *ngIf="!data.nameAttended">
+        <label class="example-margin"></label>
+        <mat-radio-group [(ngModel)]="estatus">
+          <mat-radio-button class="example-margin" value="Aprobar">
+            Aprobar
+          </mat-radio-button>
+          <mat-radio-button class="example-margin" value="Rechazar">
+            Rechazar
+          </mat-radio-button>
+        </mat-radio-group>
+      </section>
+
+
+
+    <mat-form-field class="example-full-width" appearance="fill" *ngIf="estatus === 'Rechazar'" >
+        <mat-label>Descripción</mat-label>
+        <textarea matInput placeholder="Descripción" [(ngModel)]="description">
+
+        </textarea>
+
+    </mat-form-field>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <div class="example-button-row">
+        <button mat-raised-button (click)="close()">Cerrar</button>
+        <button *ngIf="!data.nameAttended"  mat-raised-button color="primary" (click)="save()">Enviar</button>
+    </div>
+
+</mat-dialog-actions>

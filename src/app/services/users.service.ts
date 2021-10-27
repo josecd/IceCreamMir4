@@ -17,7 +17,11 @@ export class UsersService {
   }
 
   getUser(body: any) {
-    return this.afs.collection("users", ref => ref.where('name', '==', body.usuario).where('password', '==', body.password)).valueChanges();
+    return this.afs.collection("users", ref => ref.where('name', '==', body.usuario).where('password', '==', body.password).where('approve', '==', true)).valueChanges();
+  }
+
+  getUserRegister(usuario:any){
+    return this.afs.collection("users", ref => ref.where('name', '==', usuario)).valueChanges();
   }
 
 

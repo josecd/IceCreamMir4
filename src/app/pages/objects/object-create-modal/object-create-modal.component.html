@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Crear objeto</h2>
+
+
+
+<mat-dialog-content>
+
+
+    <mat-form-field class="example-full-width" appearance="fill"  >
+        <mat-label>Nombre del objeto</mat-label>
+        <input matInput  [value]="name" [(ngModel)]="name">
+    </mat-form-field>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+    <div class="example-button-row">
+        <button mat-raised-button (click)="close()">Cerrar</button>
+        <button mat-raised-button color="primary" (click)="save()">Enviar</button>
+    </div>
+
+</mat-dialog-actions>
