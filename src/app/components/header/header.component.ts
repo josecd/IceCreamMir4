@@ -26,6 +26,5 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('usuario');
     this.router.navigate(['/login']);
     this._localstorage.sendMessage('Message from Home Component to App Component!');
-
   }
 }

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { LocalstorageService } from './localstorage.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DonationsService {
+export class ActiveHoursService {
   adminDocRef!: AngularFirestoreDocument;
   subscription: Subscription;
   user: any
@@ -21,30 +21,19 @@ export class DonationsService {
     });
   }
 
-
-  getDonationList() {
-    let cast = this.afs.collection("donations", ref => ref.where('isDeleted', '==', false).orderBy('created_at','desc')).snapshotChanges()
+  getActiveHoursUser() {
+    let cast = this.afs.collection("activeHours", ref => ref.where('status', '==', true).where('idUser', '==', this.user.id).orderBy('created_at', 'desc').limit(1)).snapshotChanges()
       .pipe(map(actions => actions.map(this.documentToDomainObject)));
     return cast;
   }
 
-  getDonationListByUser(id:any) {
-    let cast = this.afs.collection("donations", ref => ref.where('isDeleted', '==', false).where('idUser','==',id).orderBy('created_at','desc')).snapshotChanges()
-      .pipe(map(actions => actions.map(this.documentToDomainObject)));
-    return cast;
-  }
-
-  getDonationUser() {
-    let cast = this.afs.collection("donations", ref => ref.where('status', '==', true).where('idUser','==',this.user.id).orderBy('created_at','desc').limit(1)).snapshotChanges()
-      .pipe(map(actions => actions.map(this.documentToDomainObject)));
-    return cast;
-  }
-
-  registerDonation(): Promise<any> {
+  
+  registerHourStart(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const user = JSON.parse(localStorage.getItem('usuario') || '{}')
-      this.afs.collection("donations").add({
+      this.afs.collection("activeHours").add({
         created_at: new Date(),
+        date_end: '',
         idUser: user.id,
         isDeleted: false,
         status: true,
@@ -57,13 +46,28 @@ export class DonationsService {
     })
   }
 
+  updateHourStatus(idPeticion: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      const user = JSON.parse(localStorage.getItem('usuario') || '{}')
+      const id = this.afs.createId();
+      this.afs.collection("activeHours").doc(idPeticion).update({
+        status: false,
+        date_end:new Date()
+      }).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  }
+
+  
 
   documentToDomainObject = (_: any) => {
     const object = _.payload.doc.data();
     object.uid = _.payload.doc.id;
     return object;
   }
-  
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();

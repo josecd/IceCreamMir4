@@ -1,28 +1,41 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LocalstorageService } from './localstorage.service';
 @Injectable({
   providedIn: 'root'
 })
 export class PetitionsService {
   adminDocRef!: AngularFirestoreDocument;
-
-  private shirtCollection!: AngularFirestoreCollection<any>;
-  shirts!: Observable<any>;
+  subscription: Subscription;
+  user: any
   constructor(
-    private afs: AngularFirestore
-  ) { }
+    private afs: AngularFirestore,
+    private _localstorage: LocalstorageService
+  ) { 
+    this.user = JSON.parse(localStorage.getItem('usuario') || '{}')
+    this.subscription = this._localstorage.getHeader().subscribe(message => {
+      this.user = JSON.parse(localStorage.getItem('usuario') || '{}')
+    });
+  }
 
   getPetitionsList() {
     return this.afs.collection("petitions", ref => ref.where('status', '==', true)).valueChanges()
   }
 
   getPetitionsListTest() {
-    let cast = this.afs.collection("petitions", ref => ref.where('status', '==', true)).snapshotChanges()
+    let cast = this.afs.collection("petitions", ref => ref.where('isDeleted', '==', false).orderBy('created_at','desc')).snapshotChanges()
       .pipe(map(actions => actions.map(this.documentToDomainObject)));
     return cast;
   }
+
+  getPetitionsListUser(id:any) {
+    let cast = this.afs.collection("petitions", ref => ref.where('isDeleted', '==', false).where('idUser','==',id).orderBy('created_at','desc')).snapshotChanges()
+      .pipe(map(actions => actions.map(this.documentToDomainObject)));
+    return cast;
+  }
+
 
   documentToDomainObject = (_: any) => {
     const object = _.payload.doc.data();
@@ -68,8 +81,6 @@ export class PetitionsService {
 
 
   updatePetitionView(idPeticion: any): Promise<any> {
-    console.log(idPeticion);
-
     return new Promise(async (resolve, reject) => {
       const user = JSON.parse(localStorage.getItem('usuario') || '{}')
       this.adminDocRef = this.afs.collection('petitions').doc(idPeticion);
@@ -102,5 +113,9 @@ export class PetitionsService {
         reject(error)
       })
     })
+  }
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
   }
 }

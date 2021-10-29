@@ -5,7 +5,7 @@
     <nav class="my-2 my-md-0 mr-md-3" *ngFor="let item of menuList">
 
 
-        <a   class="p-2 text-dark" [routerLink]="[ item.route ]" routerLinkActive="activate">{{item.name}}</a>
+        <a   class="p-2 text-dark" [routerLink]="[ item.route ]" [routerLinkActive]="'active'">{{item.name}}</a>
         <!-- <a class="p-2 text-dark" [routerLink]="[ '/users' ]" routerLinkActive="activate">Usuarios</a> -->
 
 

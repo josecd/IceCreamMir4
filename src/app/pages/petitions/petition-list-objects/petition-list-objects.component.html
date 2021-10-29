@@ -1,5 +1,64 @@
-<h1 mat-dialog-title>Dialog with elements</h1>
-<div mat-dialog-content>This dialog showcases the title, close, content and actions elements.</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
+<div style="padding: 2%;">
+	<mat-form-field appearance="standard">
+		<mat-label>Filtro</mat-label>
+		<input matInput (keyup)="applyFilter($event)" placeholder="Escriba un dato" #input>
+	</mat-form-field>
+
+	<div class="mat-elevation-z8"  style="min-height: 500px;">
+		<table mat-table [dataSource]="dataSource" matSort>
+
+			<!-- ID Column -->
+			<ng-container matColumnDef="user">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
+				<td mat-cell *matCellDef="let row"> {{row.userName}} </td>
+			</ng-container>
+
+			<!-- Progress Column -->
+			<ng-container matColumnDef="object">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Objeto </th>
+				<td mat-cell *matCellDef="let row"> {{row.nameObject}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="count">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+				<td mat-cell *matCellDef="let row"> {{row.count}} </td>
+			</ng-container>
+
+			
+			<ng-container matColumnDef="approve">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Aprobación </th>
+				<td mat-cell *matCellDef="let row"> {{row.approve}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="cierre">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha cierre </th>
+				<td mat-cell *matCellDef="let row"> {{row.dateAttended}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="Resolvio">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Resolvio </th>
+				<td mat-cell *matCellDef="let row"> {{row.nameAttended}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="acciones" *ngIf="flagAdmin" >
+				<th mat-header-cell *matHeaderCellDef>Acciones</th>
+				<td mat-cell class="buttons" mat-cell *matCellDef="let user">
+					<button mat-cell mat-raised-button color="primary"
+						(click)="goToModalCheck(user)">Ver petición.</button>
+
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+			<!-- Row shown when there is no matching data. -->
+			<tr class="mat-row" *matNoDataRow>
+				<td class="mat-cell" colspan="4">No se encuntra información "{{input.value}}"</td>
+			</tr>
+		</table>
+
+	</div>
+	<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+
 </div>

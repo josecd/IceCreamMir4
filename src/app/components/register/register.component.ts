@@ -34,7 +34,6 @@ export class RegisterComponent implements OnInit {
     Swal.showLoading();
 
     this._user.getUserRegister(this.usuario).subscribe(res => {
-      console.log(res);
       if (res.length == 0) {
         const body = {
           discord: this.discord,
@@ -42,7 +41,6 @@ export class RegisterComponent implements OnInit {
           password: this.pass,
         }
         this._user.registerUser(body).then(res => {
-          console.log(res);
           Swal.close()
           Swal.fire("Información guardada",)
           this.router.navigate(['/login']);

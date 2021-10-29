@@ -1,19 +1,39 @@
 <div class="row news">
 
-    <div class="col">
-        <div class="single-service" style="text-align: center;">
-            <h4><span class="lnr lnr-user"></span>Hora inicio</h4>
+    <div class="col" *ngIf="!statusActieHour" >
+        <div class="single-service" style="text-align: center;" (click)="registerActiveHours()" >
+            <h4><span class="lnr lnr-user"></span>Iniciar contador</h4>
             <p style="text-align: center;">
-                <a>0</a>
+                <a>{{dateNow}}</a>
             </p>
         </div>
     </div>
 
-    <div class="col">
-        <div class="single-service" style="text-align: center;">
-            <h4><span class="lnr lnr-user"></span>Donación</h4>
+    <div class="col" *ngIf="statusActieHour">
+        <div class="single-service" style="text-align: center;" (click)="registerDeactiveHours(activeHours)" >
+            <h4><span class="lnr lnr-user"></span>Terminar contador</h4>
             <p style="text-align: center;">
-                <a>0</a>
+                <a>Hora inicio registrada</a> <br>
+                
+                <a>{{dateEndActiveHour | date :'short' }}</a>
+            </p>
+        </div>
+    </div>
+ 
+    <div class="col" *ngIf="donationUser" >
+        <div class="single-service" style="text-align: center;" disabled>
+            <h4><span class="lnr lnr-user"></span>Donación del dia realizada</h4>
+            <p style="text-align: center;">
+                <a>{{dateDonationDay | date :'short'}}</a>
+            </p>
+        </div>
+    </div>
+    <div class="col" *ngIf="!donationUser" (click)="registerDonationv2()"  >
+        <div class="single-service" style="text-align: center;" disabled>
+            <h4><span class="lnr lnr-user"></span>Falta realizar la donación diaria</h4>
+            <p style="text-align: center;">
+                <a>{{dateNow}}</a>
+
             </p>
         </div>
     </div>

@@ -1,36 +1,35 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { DonationsService } from 'src/app/services/donations.service';
 
 @Component({
-  selector: 'app-donation-list',
-  templateUrl: './donation-list.component.html',
-  styleUrls: ['./donation-list.component.scss']
+  selector: 'app-conation-list-user',
+  templateUrl: './conation-list-user.component.html',
+  styleUrls: ['./conation-list-user.component.scss']
 })
-export class DonationListComponent implements OnInit {
-  displayedColumns: string[] = ['user', 'created_at', 'accion']
+export class ConationListUserComponent implements OnInit {
+  displayedColumns: string[] = ['user', 'created_at']
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   @ViewChild(MatSort)
   sort!: MatSort;
+  @Input('idUsers') idUserTab: any;
+
 
   constructor(
-    private _donation: DonationsService,
-    private router: Router
-  ) {
+    private _donation:DonationsService
+  ) { }
+
+  ngOnInit(): void {
     this.getDonationList()
   }
 
-  ngOnInit(): void {
-  }
-
   getDonationList() {
-    this._donation.getDonationList().subscribe(res => {
+    this._donation.getDonationListByUser(this.idUserTab).subscribe(res => {
       res.map(async (element: any) => {
         let data = element.created_at.toDate()
         element.created_at = new Date(data).toLocaleString()
@@ -41,10 +40,6 @@ export class DonationListComponent implements OnInit {
     })
   }
 
-  goUserProfile(item: any) {
-    this.router.navigate(['/user',item.idUser]);
-
-  }
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator;
     // this.dataSource.sort = this.sort;

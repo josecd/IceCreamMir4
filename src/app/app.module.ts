@@ -29,6 +29,10 @@ import { ModalDetailPetitionComponent } from './pages/petitions/modal-detail-pet
 import { ObjectListsComponent } from './pages/objects/object-lists/object-lists.component';
 import { ObjectCreateModalComponent } from './pages/objects/object-create-modal/object-create-modal.component';
 import { ObjectDetailModalComponent } from './pages/objects/object-detail-modal/object-detail-modal.component';
+import { HoursActiveListComponent } from './pages/hoursActive/hours-active-list/hours-active-list.component';
+import { HoursActiveListUserComponent } from './pages/hoursActive/hours-active-list-user/hours-active-list-user.component';
+import { UserTabsComponent } from './pages/user/user-tabs/user-tabs.component';
+import { ConationListUserComponent } from './pages/donations/conation-list-user/conation-list-user.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +52,11 @@ import { ObjectDetailModalComponent } from './pages/objects/object-detail-modal/
     ModalDetailPetitionComponent,
     ObjectListsComponent,
     ObjectCreateModalComponent,
-    ObjectDetailModalComponent
+    ObjectDetailModalComponent,
+    HoursActiveListComponent,
+    HoursActiveListUserComponent,
+    UserTabsComponent,
+    ConationListUserComponent
   ],
   imports: [
     BrowserModule,

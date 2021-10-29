@@ -13,18 +13,11 @@
 			</ng-container>
 
 			<ng-container matColumnDef="created_at">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha solicitud </th>
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha  </th>
 				<td mat-cell *matCellDef="let row"> {{row.created_at}} </td>
 			</ng-container>
 
 
-			<ng-container matColumnDef="accion" >
-				<th mat-header-cell *matHeaderCellDef>Acciones</th>
-				<td mat-cell class="buttons" mat-cell *matCellDef="let user">
-					<button mat-cell mat-raised-button color="primary"
-						(click)="goUserProfile(user)">Ver usuario</button>
-				</td>
-			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -38,4 +31,4 @@
 	</div>
 	<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 
-</div>
+</div>  

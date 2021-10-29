@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { LocalstorageService } from './localstorage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeaderService {
-  menuGeneral:any;
+  menuGeneral: any;
   menuRoot: any;
   menuAdmin: any;
   menuAnciano: any;
   menuUsuario: any;
-  constructor() { 
+  subscription: Subscription;
+  constructor(
+    private _localstorage: LocalstorageService
+  ) {
     this.loadMenu()
+    this.subscription = this._localstorage.getHeader().subscribe(message => {
+      this.loadMenu()
+    });
   }
   loadMenu() {
     let user = JSON.parse(localStorage.getItem('usuario') || '{}')
@@ -21,18 +29,23 @@ export class HeaderService {
           name: 'Home',
           route: '/home'
         },
-        {
-          id: 3,
-          name: 'Donaciones',
-          route: '/donations'
-        },
+        // {
+        //   id: 3,
+        //   name: 'Donaciones',
+        //   route: '/donations'
+        // },
         {
           id: 4,
-          name: 'Peticiones',
-          route: '/petitions'
+          name: 'Mis peticiones',
+          route: '/myPetitions'
+        },
+        {
+          id: 7,
+          name: 'Mis horas',
+          route: '/hoursUser'
         },
       ]
-    }else{
+    } else {
       this.menuRoot = [
         {
           id: 1,
@@ -50,15 +63,32 @@ export class HeaderService {
           route: '/donations'
         },
         {
-          id: 4,
-          name: 'Peticiones',
-          route: '/petitions'
-        },
-        {
           id: 5,
           name: 'Objetos',
           route: '/objects'
         },
+        {
+          id: 4,
+          name: 'Peticiones',
+          route: '/petitions'
+        },
+    
+        {
+          id: 6,
+          name: 'Mis peticiones',
+          route: '/myPetitions'
+        },
+        {
+          id: 7,
+          name: 'Horas',
+          route: '/hours'
+        },
+        {
+          id: 7,
+          name: 'Mis horas',
+          route: '/hoursUser'
+        },
+        
       ]
     }
 
@@ -69,4 +99,8 @@ export class HeaderService {
     this.menuGeneral = this.menuRoot;
   }
 
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
+  }
 }

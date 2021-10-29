@@ -1,4 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { GridOptions } from 'ag-grid-community';
+import { PetitionsService } from 'src/app/services/petitions.service';
+import { AfterViewInit, Component, ViewChild, OnInit, Input } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalDetailPetitionComponent } from '../modal-detail-petition/modal-detail-petition.component';
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+
+
 
 @Component({
   selector: 'app-petition-list-objects',
@@ -6,10 +17,87 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./petition-list-objects.component.scss']
 })
 export class PetitionListObjectsComponent implements OnInit {
+  displayedColumns: string[]
+  dataSource!: MatTableDataSource<any>;
 
-  constructor() { }
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+  @ViewChild(MatSort)
+  sort!: MatSort;
 
-  ngOnInit(): void {
+  flagAdmin: boolean = false;
+  user: any;
+  idUSer: any;
+
+  @Input('idUsers') idUserTab: any;
+
+  constructor(
+    private _petition: PetitionsService,
+    public datepipe: DatePipe,
+    public dialog: MatDialog
+  ) {
+    this.user = JSON.parse(localStorage.getItem('usuario') || '{}')
+    this.idUSer = this.user.id
+    if (this.user.rol == 'usuario') {
+      this.flagAdmin = false;
+      this.displayedColumns = ['user', 'object', 'count', 'approve', 'cierre', 'Resolvio',]
+    } else {
+      this.flagAdmin = true;
+      this.displayedColumns = ['user', 'object', 'count', 'approve', 'cierre', 'Resolvio', 'acciones',]
+    }
+  }
+
+  ngOnInit() {
+
+    let datoId = this.idUserTab ? this.idUserTab : this.idUSer
+
+    this._petition.getPetitionsListUser(datoId).subscribe(res => {
+
+      res.map(async (element: any) => {
+        let data = element.created_at.toDate()
+        element.created_at = new Date(data).toLocaleString()
+
+        if (element.dateAttended != "") {
+          let dateAttended = element.dateAttended.toDate()
+          element.dateAttended = new Date(dateAttended).toLocaleString()
+        } else {
+          element.dateAttended = '-----'
+        }
+
+        element.approve = element.nameAttended == '' ? 'En espera' : element.approve ? 'Aprobado' : 'Rechazado';
+      });
+      let users: any
+      users = res
+      this.dataSource = new MatTableDataSource(users);
+
+    })
+  }
+
+
+
+
+  goToModalCheck(item: any) {
+    this._petition.updatePetitionView(item.uid).then(res => {
+      this.dialog.open(ModalDetailPetitionComponent, {
+        width: "500px",
+        data: item,
+        disableClose: false,
+      })
+    })
+  }
+
+  ngAfterViewInit() {
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 }

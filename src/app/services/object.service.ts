@@ -12,9 +12,9 @@ export class ObjectService {
   ) { }
 
   getObjectsListTest() {
-    let cast = this.afs.collection("objects", ref => ref.where('isDeleted', '==', false)).snapshotChanges()
+    let body = this.afs.collection("objects", ref => ref.where('isDeleted', '==', false)).snapshotChanges()
       .pipe(map(actions => actions.map(this.documentToDomainObject)));
-    return cast;
+    return body;
   }
 
   documentToDomainObject = (_: any) => {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,19 @@ export class UsersService {
   ) { }
 
   getUsers() {
-    return this.afs.collection("users").valueChanges();
+    let body = this.afs.collection("users",ref=>ref.orderBy('created_at','desc')) .snapshotChanges()
+    .pipe(map(actions => actions.map(this.documentToDomainObject)));
+    return body;
+  }
+
+  getUserByID(id: any) {
+   return this.afs.collection("users").doc(id).valueChanges()
   }
 
   getUser(body: any) {
-    return this.afs.collection("users", ref => ref.where('name', '==', body.usuario).where('password', '==', body.password).where('approve', '==', true)).valueChanges();
+    let bodys= this.afs.collection("users", ref => ref.where('name', '==', body.usuario).where('password', '==', body.password).where('approve', '==', true)).snapshotChanges()
+    .pipe(map(actions => actions.map(this.documentToDomainObject)));
+    return bodys;
   }
 
   getUserRegister(usuario:any){
@@ -58,5 +67,25 @@ export class UsersService {
         reject(error)
       })
     })
+  }
+
+  updateUserApprove(body: any, idPeticion: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      const user = JSON.parse(localStorage.getItem('usuario') || '{}')
+      const id = this.afs.createId();
+      this.afs.collection("users").doc(idPeticion).update({
+        approve: body,
+      }).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  }
+
+  documentToDomainObject = (_: any) => {
+    const object = _.payload.doc.data();
+    object.uid = _.payload.doc.id;
+    return object;
   }
 }

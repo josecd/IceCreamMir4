@@ -76,16 +76,16 @@ export class LoginComponent implements OnInit {
         this._app.user = res[0]
         const localStouser = {
           name: this._app.user.name,
-          id: this._app.user.id,
+          id: this._app.user.uid,
           rol: this._app.user.rol,
           discord: this._app.user
         }
         localStorage.setItem('usuario', JSON.stringify(localStouser));
         this.router.navigate(['/home']);
         this._localstorage.sendMessage('Message from Home Component to App Component!');
+        this._localstorage.sendHeader('Message from Home Component to App Component!');
 
       } else {
-        console.log(res);
 
       }
     })
