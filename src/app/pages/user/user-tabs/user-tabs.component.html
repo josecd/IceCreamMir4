@@ -11,4 +11,8 @@
     <mat-tab label="Horas" *ngIf="idUser">
         <app-hours-active-list-user [idUsers]="idUser"></app-hours-active-list-user>
     </mat-tab>
+
+    <mat-tab label="Calendario" *ngIf="idUser">
+        <app-calendar [idUsers]="idUser"></app-calendar>
+    </mat-tab>
 </mat-tab-group>

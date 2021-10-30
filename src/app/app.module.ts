@@ -33,6 +33,10 @@ import { HoursActiveListComponent } from './pages/hoursActive/hours-active-list/
 import { HoursActiveListUserComponent } from './pages/hoursActive/hours-active-list-user/hours-active-list-user.component';
 import { UserTabsComponent } from './pages/user/user-tabs/user-tabs.component';
 import { ConationListUserComponent } from './pages/donations/conation-list-user/conation-list-user.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarComponent } from './components/calendar/calendar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -56,7 +60,8 @@ import { ConationListUserComponent } from './pages/donations/conation-list-user/
     HoursActiveListComponent,
     HoursActiveListUserComponent,
     UserTabsComponent,
-    ConationListUserComponent
+    ConationListUserComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +74,9 @@ import { ConationListUserComponent } from './pages/donations/conation-list-user/
     ReactiveFormsModule,
     AgGridModule.withComponents([]),
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    NgbModule,
   ],
   providers: [AngularFirestore, ApiBasic,LocalstorageService,DatePipe],
   bootstrap: [AppComponent]
